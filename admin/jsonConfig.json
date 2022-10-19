@@ -192,7 +192,10 @@
                             "default": "My Calendar"
                         },
                         {
-                            "type": "text",
+                            "type": "file",
+                            "limitPath": "0_userdata.0",
+                            "filterFiles": ["ics", "ical"],
+                            "allowUpload": true,
                             "attr": "url",
                             "width": "20%",
                             "title": {

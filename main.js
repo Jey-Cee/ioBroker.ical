@@ -160,7 +160,15 @@ Date.prototype.compare = function(b) {
 function getICal(urlOrFile, user, pass, sslignore, calName, cb) {
     // Is it file or URL
     if (!urlOrFile.match(/^https?:\/\//)) {
-        if (!fs.existsSync(urlOrFile)) {
+       if(urlOrFile.match("0_userdata.0")) {
+           adapter.readFile("0_userdata.0", urlOrFile.replace("0_userdata.0/", ""), (err, data) => {
+               if(err) {
+                   cb && cb(`Cannot read file "${urlOrFile}": ${err}`);
+               }
+               cb && cb(null, data.toString());
+           });
+
+       }else if (!fs.existsSync(urlOrFile)) {
             cb && cb(`File does not exist: "${urlOrFile}"`);
         } else {
             try {
@@ -1402,7 +1410,7 @@ async function setState(id, val, ack, cb) {
                 adapter.log.info(`Set ${id} to ${val} with ack=${ack}`);
                 await adapter.setForeignStateAsync(id, val, ack);
             }
-        } catch {
+        } catch (e){
             // Ignore error
         }
     }
